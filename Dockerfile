@@ -60,7 +60,7 @@ RUN echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d && \
     sudo -u postgres psql -c "CREATE USER $ONLYOFFICE_VALUE WITH password '$ONLYOFFICE_VALUE';" && \
     sudo -u postgres psql -c "GRANT ALL privileges ON DATABASE $ONLYOFFICE_VALUE TO $ONLYOFFICE_VALUE;" && \ 
     service postgresql stop && \
-    service redis-server stop && \
+    sudo redis-cli shutdown && \
     service rabbitmq-server stop && \
     service supervisor stop && \
     service nginx stop && \
