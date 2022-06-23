@@ -19,7 +19,7 @@ jobs:
     strategy:
       matrix:
         images: ["documentserver"]
-        edition: ["", "-ee", "-de"]
+        edition: ["-ee"]
         condition: [true]
     steps:
       - name: Checkout code 
