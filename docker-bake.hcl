@@ -38,7 +38,7 @@ target "documentserver" {
     target = "documentserver"
     dockerfile= "${DOCKERFILE}"
     tags = ["docker.io/danilaworker/${PREFIX_NAME}${PRODUCT_NAME}${PRODUCT_EDITION}:${TAG}"]
-    platforms = ["linux/amd64", "linux/arm64"]
+    platforms = ["${PLATFORM}"]
     args = {
         "PRODUCT_EDITION": "${PRODUCT_EDITION}"
         "PRODUCT_NAME": "${PRODUCT_NAME}"

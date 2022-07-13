@@ -26,14 +26,6 @@ jobs:
         run: | 
           echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
           
-      - name: 
-        run: |
-          if [[ ${{ env.RELEASE_VERSION }}  == v99.99* ]]; then
-          echo "Build unstable >> start next job >>"
-          exit 1
-          fi
-        shell: bash 
-
       - name: Checkout code 
         uses: actions/checkout@v3
 
@@ -82,15 +74,18 @@ jobs:
           fi
           
           if [[ "$AMD64" = "present" ]] && [[ "$ARM64" = "present" ]]; then
-            PLATFORMS="--set *.platform=linux/amd64,linux/arm64"
+            PLATFORM="linux/amd64,linux/arm64"
+            echo "Present arm64/amd64, build miltiarch" 
           fi
 
           if [[ "$AMD64" != "present" ]] && [[ "$ARM64" = "present" ]]; then
-            PLATFORMS="--set *.platform=linux/arm64"
+            PLATFORM="linux/arm64"
+            echo "Present only arm64, build arm image"
           fi
 
           if [[ "$AMD64" = "present" ]] && [[ "$ARM64" != "present" ]]; then
-            PLATFORMS="--set *.platform=linux/amd64"
+            PLATFORM="linux/amd64"
+            echo "Present only amd64, build amd image"
           fi
 
           if [[ "$AMD64" != "present" ]] && [[ "$ARM64" != "present" ]]; then
@@ -100,10 +95,9 @@ jobs:
           echo "Start build >>"     
           PRODUCT_EDITION=${{ matrix.edition }} \
             PRODUCT_NAME=${{ env.PRODUCT_NAME }} DOCKERFILE=Dockerfile \
-            PREFIX_NAME=4testing- TAG=$DOCKER_TAG \
+            PREFIX_NAME=4testing- TAG=$DOCKER_TAG PLATFORM=$PLATFORM
             docker buildx bake \
              -f docker-bake.hcl ${{ matrix.images }} \
-             <<< """$PLATFORMS""" \ 
              --push
              echo "DONE: Build success >> exit with 0"
              exit 0  
