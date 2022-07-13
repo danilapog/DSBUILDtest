@@ -81,7 +81,7 @@ jobs:
           fi
         shell: bash
   build-unstable:
-    name: Build unstable images:
+    name: Build unstable images
     if: startsWith(github.event.ref, 'refs/tags/v99.99.*'
     runs-on: ubuntu-latest
     continue-on-error: ${{ matrix.condition }}
