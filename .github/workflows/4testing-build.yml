@@ -142,7 +142,7 @@ jobs:
             PLATFORMS=${PLATFORMS:-\--set *.platform=linux/arm64}
           fi
 
-          if [[ "$AMD64" == "present" ]] && [[ "$ARM64" == "" ]]; then 
+          if [[ "$AMD64" = "present" ]] && [[ "$ARM64" = "" ]]; then 
             PLATFORMS=${PLATFORMS:-\--set *.platform=linux/amd64}
             echo "$PLATFORMS" 
             echo "$AMD64"
