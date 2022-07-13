@@ -135,15 +135,15 @@ jobs:
           fi
 
           if [[ "$AMD64" = "present" ]] && [[ "$ARM64" = "present" ]]; then
-            PLATFORMS="--set *.platform=linux/amd64,linux/arm64"
+            PLATFORMS=" *.platform=linux/amd64,linux/arm64"
           fi
 
           if [[ "$AMD64" != "present" ]] && [[ "$ARM64" = "present" ]]; then
-            PLATFORMS="--set *.platform=linux/arm64"
+            PLATFORMS=" *.platform=linux/arm64"
           fi
           
           if [[ "$AMD64" = "present" ]] && [[ "$ARM64" != "present" ]]; then
-            PLATFORMS="--set *.platform=linux/arm64"
+            PLATFORMS=" *.platform=linux/arm64"
           fi
 
           if [[ "$AMD64" = "" ]] && [[ "$ARM64" = "" ]]; then
@@ -151,13 +151,14 @@ jobs:
             exit 1
           fi
 
+
           sed -i "s|http://download.onlyoffice.com/install/documentserver/linux/\${COMPANY_NAME}-\${PRODUCT_NAME}\${PRODUCT_EDITION}|${{ secrets.UNSTABLE_REPO_URL }}${{ matrix.edition }}_$PACKAGE_VERSION|g" Dockerfile
-          PRODUCT_EDITION=${{ matrix.edition }} \
-          PRODUCT_NAME=${{ env.PRODUCT_NAME }} DOCKERFILE=Dockerfile \
-          PREFIX_NAME=4testing- TAG=$DOCKER_TAG \  
-          docker buildx bake \
-            -f docker-bake.hcl ${{ matrix.images }} \
-            --push <<< ${PLATFORMS}
+            PRODUCT_EDITION=${{ matrix.edition }} --set <(echo $PLATFORMS) \
+            PRODUCT_NAME=${{ env.PRODUCT_NAME }} DOCKERFILE=Dockerfile \
+            PREFIX_NAME=4testing- TAG=$DOCKER_TAG \  
+            docker buildx bake \
+              -f docker-bake.hcl ${{ matrix.images }} \
+              --push 
             echo "DONE: Build success >> exit with 0"
             exit 0
         shell: bash
