@@ -153,7 +153,7 @@ jobs:
           sed -i "s|http://download.onlyoffice.com/install/documentserver/linux/\${COMPANY_NAME}-\${PRODUCT_NAME}\${PRODUCT_EDITION}|${{ secrets.UNSTABLE_REPO_URL }}${{ matrix.edition }}_$PACKAGE_VERSION|g" Dockerfile
             PRODUCT_EDITION=${{ matrix.edition }} \
             PRODUCT_NAME=${{ env.PRODUCT_NAME }} DOCKERFILE=Dockerfile \
-            PREFIX_NAME=4testing- TAG=$DOCKER_TAG \ <(echo "$PLATFORMS") \ 
+            PREFIX_NAME=4testing- TAG=$DOCKER_TAG \  
             docker buildx bake \
               -f docker-bake.hcl ${{ matrix.images }} \
               --push 
