@@ -82,7 +82,7 @@ jobs:
         shell: bash
   build-unstable:
     name: Build unstable images
-    if: startsWith(github.event.ref, 'refs/tags/v99.99.*'
+    if: 'refs/tags/v99.*'
     runs-on: ubuntu-latest
     continue-on-error: ${{ matrix.condition }}
     strategy:
