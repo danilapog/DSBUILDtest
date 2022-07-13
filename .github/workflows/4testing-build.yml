@@ -158,7 +158,7 @@ jobs:
             PREFIX_NAME=4testing- TAG=$DOCKER_TAG \  
             docker buildx bake \
               -f docker-bake.hcl ${{ matrix.images }} \
-              <<< $PLATFORMS \ 
+              <(echo $PLATFORMS) \ 
               --push 
             echo "DONE: Build success >> exit with 0"
             exit 0
