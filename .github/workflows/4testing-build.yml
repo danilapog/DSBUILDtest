@@ -135,15 +135,15 @@ jobs:
           fi
 
           if [[ "$AMD64" = "present" ]] && [[ "$ARM64" = "present" ]]; then
-            PLATFORMS=--set *.platform=linux/amd64,linux/arm64
+            PLATFORMS="--set *.platform=linux/amd64,linux/arm64"
           fi
 
           if [[ "$AMD64" != "present" ]] && [[ "$ARM64" = "present" ]]; then
-            PLATFORMS=--set *.platform=linux/arm64
+            PLATFORMS="--set *.platform=linux/arm64"
           fi
           
           if [[ "$AMD64" = "present" ]] && [[ "$ARM64" != "present" ]]; then
-            PLATFORMS=--set *.platform=linux/arm64
+            PLATFORMS="--set *.platform=linux/arm64"
           fi
 
           if [[ "$AMD64" = "" ]] && [[ "$ARM64" = "" ]]; then
