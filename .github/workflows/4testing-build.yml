@@ -45,6 +45,8 @@ jobs:
       - name: Build 4testing
         run: |
           DOCKER_TAG=$(echo ${{ steps.tag_name.outputs.SOURCE_TAG }} | sed 's/^.//' )
+          if [[ $DOCKER_TAG != 99.99* ]]; then
+          echo "Build starting >>" 
           PACKAGE_VERSION=$( echo $DOCKER_TAG | sed -E 's/(.*)\./\1-/' )
           PACKAGE_URL=${{ secrets.REPO_URL }}${{ matrix.edition }}_"$PACKAGE_VERSION"_amd64.deb
           STATUS=$(curl -s -o /dev/null -w "%{http_code}\n" "$PACKAGE_URL")
@@ -59,6 +61,7 @@ jobs:
           if [[ "$STATUS" = "200" ]]; then
              echo "Have access to documentserver${{ matrix.edition }} arm64 arch"
              echo "All architecture are available >> build is starting."
+             if 
              sed -i "s|http://download.onlyoffice.com/install/documentserver/linux/\${COMPANY_NAME}-\${PRODUCT_NAME}\${PRODUCT_EDITION}|${{ secrets.REPO_URL }}${{ matrix.edition }}_$PACKAGE_VERSION|g" Dockerfile
              PRODUCT_EDITION=${{ matrix.edition }} \
                 PRODUCT_NAME=${{ env.PRODUCT_NAME }} DOCKERFILE=Dockerfile \
@@ -71,5 +74,9 @@ jobs:
           else
              echo "FAILED: Have no access to some required architecture documentserver${{ matrix.edition }} >> Exit with 0."
              exit 1
+          fi
+          else 
+          echo "This is unstable build" 
+          exit 0
           fi
         shell: bash
