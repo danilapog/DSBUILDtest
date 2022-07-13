@@ -23,11 +23,15 @@ variable "PRODUCT_EDITION" {
 }
 
 variable "PRODUCT_NAME" {
-    default = ""
+    default = "documentserver"
 }
 
 variable "DOCKERFILE" {
     default = ""
+}
+
+variable "PLATFORM" {
+    default = "" 
 }
 
 target "documentserver" {
@@ -38,6 +42,7 @@ target "documentserver" {
     args = {
         "PRODUCT_EDITION": "${PRODUCT_EDITION}"
         "PRODUCT_NAME": "${PRODUCT_NAME}"
+        "PLATFORM": "${PLATFORM}"
     }
 }
 
