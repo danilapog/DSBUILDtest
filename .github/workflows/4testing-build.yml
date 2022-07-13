@@ -154,6 +154,8 @@ jobs:
           fi [[ "$AMD64" = "" ]] && [[ "$ARM64" = "" ]]; then
             echo "Build will not started requested architectures does not present"
             exit 1
+          else 
+            echo "aboba just message" 
           fi
           fi
           fi
