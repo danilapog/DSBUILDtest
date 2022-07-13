@@ -31,6 +31,7 @@ jobs:
           if [[ ${{ env.RELEASE_VERSION }}  == v99.99* ]]; then
           echo "Build unstable >> start next job >>"
           exit 0
+          fi
         shell: bash 
 
       - name: Checkout code 
