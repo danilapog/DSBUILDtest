@@ -158,5 +158,4 @@ jobs:
             --push 
           echo "DONE: Build success >> exit with 0"
           exit 0
-        shell: bash
 
