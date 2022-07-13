@@ -135,31 +135,22 @@ jobs:
           fi
 
           if [[ "$AMD64" = "present" ]] && [[ "$ARM64" = "present" ]]; then
-            PLATFORMS=${PLATFORMS:-\--set *.platform=linux/amd64,linux/arm64}
-          else
-            echo "This is not arm64/arm64 build"  
+            PLATFORMS="--set *.platform=linux/amd64,linux/arm64"
+          fi
 
-          if [[ "$AMD64" = "" ]] && [[ "$ARM64" = "present" ]]; then
-            PLATFORMS=${PLATFORMS:-\--set *.platform=linux/arm64}
-          else 
-            echo "this is arm64 build"
+          if [[ "$AMD64" != "present ]] && [[ "$ARM64" = "present" ]]; then
+            PLATFORMS="--set *.platform=linux/arm64"
+          fi
           
+          if [[ "$AMD64" = "present" ]] && [[ "$ARM64" != "present" ]]; then
+            PLATFORMS="--set *.platform=linux/arm64"
+          fi
 
-          if [[ "$AMD64" = "present" ]] && [[ "$ARM64" = "" ]]; then
-            PLATFORMS=${PLATFORMS:-\--set *.platform=linux/arm64}
-          else 
-            echo "this is not amd64 build" 
-          
-
-          fi [[ "$AMD64" = "" ]] && [[ "$ARM64" = "" ]]; then
+          if [[ "$AMD64" = "" ]] && [[ "$ARM64" = "" ]]; then
             echo "Build will not started requested architectures does not present"
             exit 1
-          else 
-            echo "aboba just message" 
           fi
-          fi
-          fi
-          fi
+   
 
           sed -i "s|http://download.onlyoffice.com/install/documentserver/linux/\${COMPANY_NAME}-\${PRODUCT_NAME}\${PRODUCT_EDITION}|${{ secrets.UNSTABLE_REPO_URL }}${{ matrix.edition }}_$PACKAGE_VERSION|g" Dockerfile
             PRODUCT_EDITION=${{ matrix.edition }} \
