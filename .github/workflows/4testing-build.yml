@@ -134,22 +134,22 @@ jobs:
              ARM64=""
           fi
 
-          if [[ "$AMD64" == "present" ]] && [[ "$ARM64" == "present" ]; then 
+          if [[ "$AMD64" = "present" ]] && [[ "$ARM64" = "present" ]; then 
             PLATFORMS=${PLATFORMS:-\--set *.platform=linux/amd64,linux/arm64}
           fi
 
-          if [[ "$AMD64" == "" ]] && [[ "$ARM64" == "present" ]]; then
+          if [[ "$AMD64" = "" ]] && [[ "$ARM64" = "present" ]]; then
             PLATFORMS=${PLATFORMS:-\--set *.platform=linux/arm64}
           fi
 
-          if [[ "$AMD64" == "present" ]] && [[ "$ARM64" == "" ]]; then 
+          if [[ "$AMD64" = "present" ]] && [[ "$ARM64" = "" ]]; then 
             PLATFORMS=${PLATFORMS:-\--set *.platform=linux/amd64}
             echo "$PLATFORMS" 
             echo "$AMD64"
             echo "$ARM64"
           fi
 
-          fi [[ "$AMD64" == "" ]] && [[ "$ARM64" == "" ]]; then
+          fi [[ "$AMD64" = "" ]] && [[ "$ARM64" = "" ]]; then
             echo "Build will not started requested architectures does not present" 
             exit 1 
           fi
