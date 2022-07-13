@@ -122,7 +122,7 @@ jobs:
              echo "Have access to documentserver${{ matrix.edition }} amd64 arch >> check arm64 access"
              AMD64=present
           else 
-             AMD64=""
+             AMD64=
           fi
           PACKAGE_URL=${{ secrets.REPO_URL }}${{ matrix.edition }}_"$PACKAGE_VERSION"_arm64.deb
           STATUS=$(curl -s -o /dev/null -w "%{http_code}\n" "$PACKAGE_URL")
@@ -131,19 +131,19 @@ jobs:
              ARM64=present
           else 
              echo "ARM64 does not present, build only AMD64 >> " 
-             ARM64=""
+             ARM64=
           fi
 
-          if [ $AMD64 == present ] && [ $ARM64 == present ]; then 
-            PLATFORMS="--set *.platform=linux/amd64,linux/arm64"
+          if [[ "$AMD64" == "present" ]] && [[ "$ARM64" == "present" ]; then 
+            PLATFORMS=${PLATFORMS:-\--set *.platform=linux/amd64,linux/arm64}
           fi
 
-          if [ $AMD64 == "" ] && [ $ARM64 == present ]; then
-            PLATFORMS="--set *.platform=linux/arm64"
+          if [[ "$AMD64" == "" ]] && [[ "$ARM64" == "present" ]]; then
+            PLATFORMS=${PLATFORMS:-\--set *.platform=linux/arm64}
           fi
 
-          if [ $AMD64 == present ] && [ $ARM64 == "" ]; then 
-            PLATFORMS="--set *.platform=linux/amd64"
+          if [[ "$AMD64" == "present" ]] && [[ "$ARM64" == "" ]]; then 
+            PLATFORMS=${PLATFORMS:-\--set *.platform=linux/amd64}
             echo "$PLATFORMS" 
             echo "$AMD64"
             echo "$ARM64"
