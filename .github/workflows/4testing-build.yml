@@ -143,7 +143,7 @@ jobs:
           fi
 
           if [[ "$AMD64" = "present" ]] && [[ "$ARM64" != "present" ]]; then
-            PLATFORMS="--set *.platform=linux/arm64"
+            PLATFORMS="--set documentserver.platform=linux/amd64"
           fi
 
           if [[ "$AMD64" != "present" ]] && [[ "$ARM64" != "present" ]]; then
