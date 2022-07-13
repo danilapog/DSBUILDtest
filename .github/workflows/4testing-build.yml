@@ -122,7 +122,7 @@ jobs:
              echo "Have access to documentserver${{ matrix.edition }} amd64 arch >> check arm64 access"
              AMD64=present
           else 
-             AMD64=
+             AMD64=""
           fi
           PACKAGE_URL=${{ secrets.REPO_URL }}${{ matrix.edition }}_"$PACKAGE_VERSION"_arm64.deb
           STATUS=$(curl -s -o /dev/null -w "%{http_code}\n" "$PACKAGE_URL")
@@ -131,7 +131,7 @@ jobs:
              ARM64=present
           else 
              echo "ARM64 does not present, build only AMD64 >> " 
-             ARM64=
+             ARM64=""
           fi
 
           if [[ "$AMD64" == "present" ]] && [[ "$ARM64" == "present" ]; then 
@@ -149,7 +149,7 @@ jobs:
             echo "$ARM64"
           fi
 
-          fi [ $AMD64 == "" ] && [ $ARM64 == "" ]; then
+          fi [[ "$AMD64" == "" ]] && [[ "$ARM64" == "" ]]; then
             echo "Build will not started requested architectures does not present" 
             exit 1 
           fi
