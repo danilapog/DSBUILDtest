@@ -134,23 +134,26 @@ jobs:
              ARM64=""
           fi
 
-          if [ "$AMD64" == "present" ] && [ "$ARM64" == "present" ]; then 
+          if [ $AMD64 == present ] && [ $ARM64 == present ]; then 
             PLATFORMS="--set *.platform=linux/amd64,linux/arm64"
           fi
 
-          if [ "$AMD64" == "" ] && [ "$ARM64" == "present" ]; then
+          if [ $AMD64 == "" ] && [ $ARM64 == present ]; then
             PLATFORMS="--set *.platform=linux/arm64"
           fi
 
-          if [ "$AMD64" == "present" ] && [ "$ARM64" == "" ]; then 
+          if [ $AMD64 == present ] && [ $ARM64 == "" ]; then 
             PLATFORMS="--set *.platform=linux/amd64"
             echo "$PLATFORMS" 
+            echo "$AMD64"
+            echo "$ARM64"
           fi
 
-          fi [ "$AMD64" == "" ] && [ "$ARM64" == "" ]; then
-          echo "Build will not started requested architectures does not present" 
-          exit 1 
+          fi [ $AMD64 == "" ] && [ $ARM64 == "" ]; then
+            echo "Build will not started requested architectures does not present" 
+            exit 1 
           fi
+          
           sed -i "s|http://download.onlyoffice.com/install/documentserver/linux/\${COMPANY_NAME}-\${PRODUCT_NAME}\${PRODUCT_EDITION}|${{ secrets.UNSTABLE_REPO_URL }}${{ matrix.edition }}_$PACKAGE_VERSION|g" Dockerfile
             PRODUCT_EDITION=${{ matrix.edition }} \
             PRODUCT_NAME=${{ env.PRODUCT_NAME }} DOCKERFILE=Dockerfile \
