@@ -135,22 +135,22 @@ jobs:
           fi
 
           if [[ "$AMD64" = "present" ]] && [[ "$ARM64" = "present" ]]; then
-            PLATFORMS="--set *.platform=linux/amd64,linux/arm64"
+            PLATFORMS=" *.platform=linux/amd64,linux/arm64"
           fi
 
           if [[ "$AMD64" != "present" ]] && [[ "$ARM64" = "present" ]]; then
-            PLATFORMS="--set *.platform=linux/arm64"
+            PLATFORMS=" *.platform=linux/arm64"
           fi
           
           if [[ "$AMD64" = "present" ]] && [[ "$ARM64" != "present" ]]; then
-            PLATFORMS="--set *.platform=linux/arm64"
+            PLATFORMS=" *.platform=linux/arm64"
           fi
 
           if [[ "$AMD64" = "" ]] && [[ "$ARM64" = "" ]]; then
             echo "Build will not started requested architectures does not present"
             exit 1
           fi
-
+          echo $PLATFORMS
 
           sed -i "s|http://download.onlyoffice.com/install/documentserver/linux/\${COMPANY_NAME}-\${PRODUCT_NAME}\${PRODUCT_EDITION}|${{ secrets.UNSTABLE_REPO_URL }}${{ matrix.edition }}_$PACKAGE_VERSION|g" Dockerfile
             PRODUCT_EDITION=${{ matrix.edition }} \
@@ -158,7 +158,7 @@ jobs:
             PREFIX_NAME=4testing- TAG=$DOCKER_TAG \  
             docker buildx bake \
               -f docker-bake.hcl ${{ matrix.images }} \
-              <(echo $PLATFORMS) \ 
+              --set <(echo $PLATFORMS) \ 
               --push 
             echo "DONE: Build success >> exit with 0"
             exit 0
