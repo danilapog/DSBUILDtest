@@ -95,7 +95,7 @@ jobs:
           echo "Start build >>"     
           PRODUCT_EDITION=${{ matrix.edition }} \
             PRODUCT_NAME=${{ env.PRODUCT_NAME }} DOCKERFILE=Dockerfile \
-            PREFIX_NAME=4testing- TAG=$DOCKER_TAG PLATFORM=$PLATFORM
+            PREFIX_NAME=4testing- TAG=$DOCKER_TAG PLATFORM=$PLATFORM \
             docker buildx bake \
              -f docker-bake.hcl ${{ matrix.images }} \
              --push
