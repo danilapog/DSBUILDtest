@@ -133,12 +133,37 @@ jobs:
              echo "ARM64 does not present, build only AMD64 >> " 
              ARM64=
           fi
-          PLATFORMS="--set *.platform=linux/amd64"
+
+          if [[ "$AMD64" = "present" ]] && [[ "$ARM64" = "present" ]]; then
+            PLATFORMS=${PLATFORMS:-\--set *.platform=linux/amd64,linux/arm64}
+          else
+            echo "This is not arm64/arm64 build"  
+
+          if [[ "$AMD64" = "" ]] && [[ "$ARM64" = "present" ]]; then
+            PLATFORMS=${PLATFORMS:-\--set *.platform=linux/arm64}
+          else 
+            echo "this is arm64 build"
+          
+
+          if [[ "$AMD64" = "present" ]] && [[ "$ARM64" = "" ]]; then
+            PLATFORMS=${PLATFORMS:-\--set *.platform=linux/arm64}
+          else 
+            echo "this is not amd64 build" 
+          
+
+          fi [[ "$AMD64" = "" ]] && [[ "$ARM64" = "" ]]; then
+            echo "Build will not started requested architectures does not present"
+            exit 1
+          fi
+          fi
+          fi
+          fi
+
           sed -i "s|http://download.onlyoffice.com/install/documentserver/linux/\${COMPANY_NAME}-\${PRODUCT_NAME}\${PRODUCT_EDITION}|${{ secrets.UNSTABLE_REPO_URL }}${{ matrix.edition }}_$PACKAGE_VERSION|g" Dockerfile
             PRODUCT_EDITION=${{ matrix.edition }} \
             PRODUCT_NAME=${{ env.PRODUCT_NAME }} DOCKERFILE=Dockerfile \
             PREFIX_NAME=4testing- TAG=$DOCKER_TAG \
-            $PLATFORMS docker buildx bake \
+            ${PLATFORMS} docker buildx bake \
               -f docker-bake.hcl ${{ matrix.images }} \
               --push
              echo "DONE: Build success >> exit with 0"
