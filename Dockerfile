@@ -24,7 +24,8 @@ ENV COMPANY_NAME=$COMPANY_NAME \
     PRODUCT_EDITION=$PRODUCT_EDITION
 
 RUN if [[ $(uname -m) == x86_64 ]] ; then export TARGETARCH=amd64 ; else export TARGETARCH=arm64 ; fi &&\
-    wget -q -P /tmp "$PACKAGE_URL" && \
+    subtitutedPackage_url=$(envsubst <<<"$subtitutedPackage_url")
+    wget -q -P /tmp "$subtitutedPackage_url" && \
     apt-get -y update && \
     service postgresql start && \
     apt-get -yq install /tmp/$(basename "$PACKAGE_URL") && \
