@@ -46,11 +46,11 @@ jobs:
           DOCKER_TAG=$(echo ${{ env.RELEASE_VERSION }} | sed 's/^.//' )
           PACKAGE_VERSION=$( echo $DOCKER_TAG | sed -E 's/(.*)\./\1-/' )
           if [[ ${{ env.RELEASE_VERSION }}  == v99.99* ]]; then 
-             sed -i "s|http://download.onlyoffice.com/install/documentserver/linux/\${COMPANY_NAME}-\${PRODUCT_NAME}\${PRODUCT_EDITION}|${{ secrets.UNSTABLE_REPO_URL }}${{ matrix.edition }}_$PACKAGE_VERSION|g" Dockerfile
              PACKAGE_URL=${{ secrets.UNSTABLE_REPO_URL }}${{ matrix.edition }}_"$PACKAGE_VERSION"_amd64.deb
+             PRODUCT_URL=${{ secrets.UNSTABLE_REPO_URL }}${{ matrix.edition }}_"$PACKAGE_VERSION"_$(uname -m).deb
           else 
-            sed -i "s|http://download.onlyoffice.com/install/documentserver/linux/\${COMPANY_NAME}-\${PRODUCT_NAME}\${PRODUCT_EDITION}|${{ secrets.REPO_URL }}${{ matrix.edition }}_$PACKAGE_VERSION|g" Dockerfile
              PACKAGE_URL=${{ secrets.REPO_URL }}${{ matrix.edition }}_"$PACKAGE_VERSION"_amd64.deb
+             PRODUCT_URL=${{ secrets.REPO_URL }}${{ matrix.edition }}_"$PACKAGE_VERSION"_$(uname -m).deb
           fi
              STATUS=$(curl -s -o /dev/null -w "%{http_code}\n" "$PACKAGE_URL")
           if [[ "$STATUS" = "200" ]]; then
@@ -92,14 +92,14 @@ jobs:
             echo "FAILED: Build will not started requested architectures does not present"
             exit 1
           fi
-          PRODUCT_EDITION=${{ matrix.edition }} \
+          PRODUCT_EDITION=${{ matrix.edition }} PRODUCT_URL=$PRODUCT_URL \
             PRODUCT_NAME=${{ env.PRODUCT_NAME }} DOCKERFILE=Dockerfile \
             PREFIX_NAME=4testing- TAG=$DOCKER_TAG PLATFORM=$PLATFORM \
             docker buildx bake \
              -f docker-bake.hcl ${{ matrix.images }} \
              --print
           echo "Start build >>"     
-          PRODUCT_EDITION=${{ matrix.edition }} \
+          PRODUCT_EDITION=${{ matrix.edition }} PRODUCT_URL=$PRODUCT_URL \
             PRODUCT_NAME=${{ env.PRODUCT_NAME }} DOCKERFILE=Dockerfile \
             PREFIX_NAME=4testing- TAG=$DOCKER_TAG PLATFORM=$PLATFORM \
             docker buildx bake \
