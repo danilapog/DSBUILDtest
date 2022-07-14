@@ -23,7 +23,8 @@ ENV COMPANY_NAME=$COMPANY_NAME \
     PRODUCT_NAME=$PRODUCT_NAME \
     PRODUCT_EDITION=$PRODUCT_EDITION
 
-RUN wget -q -P /tmp "$PACKAGE_URL" && \
+RUN echo $TARGETARCH
+    wget -q -P /tmp "$PACKAGE_URL" && \
     apt-get -y update && \
     service postgresql start && \
     apt-get -yq install /tmp/$(basename "$PACKAGE_URL") && \

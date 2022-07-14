@@ -50,7 +50,7 @@ jobs:
              URL='${{ secrets.UNSTABLE_REPO_URL }}${{ matrix.edition }}_"$PACKAGE_VERSION"_\$TARGETARCH.deb'
           else 
              PACKAGE_URL=${{ secrets.REPO_URL }}${{ matrix.edition }}_"$PACKAGE_VERSION"_amd64.deb
-             URL='${{ secrets.REPO_URL }}${{ matrix.edition }}_"$PACKAGE_VERSION"_\$TARGETARCH.deb'
+             URL='${{ secrets.REPO_URL }}${{ matrix.edition }}_$PACKAGE_VERSION_$TARGETARCH.deb'
           fi
              STATUS=$(curl -s -o /dev/null -w "%{http_code}\n" "$PACKAGE_URL")
           if [[ "$STATUS" = "200" ]]; then
