@@ -23,7 +23,7 @@ ENV COMPANY_NAME=$COMPANY_NAME \
     PRODUCT_NAME=$PRODUCT_NAME \
     PRODUCT_EDITION=$PRODUCT_EDITION
 
-RUN echo $TARGETARCH && \
+RUN if [[ $(uname -m) == x86_64 ]] ; then export TARGETARCH=amd64 ; else export TARGETARCH=arm64 ; fi &&\
     wget -q -P /tmp "$PACKAGE_URL" && \
     apt-get -y update && \
     service postgresql start && \
