@@ -23,7 +23,7 @@ ENV COMPANY_NAME=$COMPANY_NAME \
     PRODUCT_NAME=$PRODUCT_NAME \
     PRODUCT_EDITION=$PRODUCT_EDITION
 
-RUN if [ $(uname -m) == x86_64 ] ; then ARCH=amd64 ; else ARCH=arm64 ; fi && \
+RUN if [[ $(uname -m) = "x86_64" ]] ; then ARCH=amd64 ; else ARCH=arm64 ; fi && \
     PACKAGE_URL=$( echo $PACKAGE_URL | sed "s/TARGETARCH/"${ARCH}"/g") && \
     wget -q -P /tmp "$PACKAGE_URL" && \
     apt-get -y update && \
