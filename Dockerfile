@@ -5,6 +5,9 @@ ENV LANG=en_US.UTF-8 LANGUAGE=en_US:en LC_ALL=en_US.UTF-8 DEBIAN_FRONTEND=nonint
 
 ARG ONLYOFFICE_VALUE=onlyoffice
 
+RUN apt-get -y update && \
+    apt-get -yq install wget apt-transport-https gnupg locales
+
 COPY config /app/ds/setup/config/
 COPY run-document-server.sh /app/ds/run-document-server.sh
 

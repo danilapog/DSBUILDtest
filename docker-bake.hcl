@@ -34,7 +34,7 @@ variable "PLATFORM" {
     default = "" 
 }
 
-variable "PRODUCT_URL" {
+variable "PACKAGE_URL" {
     default = "" 
 }
 
@@ -46,7 +46,7 @@ target "documentserver" {
     args = {
         "PRODUCT_EDITION": "${PRODUCT_EDITION}"
         "PRODUCT_NAME": "${PRODUCT_NAME}"
-        "PRODUCT_URL": "${PRODUCT_URL}"
+        "PACKAGE_URL": "${PACKAGE_URL}"
     }
 }
 
