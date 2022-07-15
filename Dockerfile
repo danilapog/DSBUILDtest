@@ -78,7 +78,8 @@ ARG PACKAGE_URL="http://download.onlyoffice.com/install/documentserver/linux/${C
 
 ENV COMPANY_NAME=$COMPANY_NAME \
     PRODUCT_NAME=$PRODUCT_NAME \
-    PRODUCT_EDITION=$PRODUCT_EDITION 
+    PRODUCT_EDITION=$PRODUCT_EDITION \
+    PACKAGE_URL=$PACKAGE_URL 
 
 RUN if [ $(uname -m) = "x86_64" ] ; then TARGETARCH=amd64 ; else TARGETARCH=arm64 ; fi && \
     URL=$PACKAGE_URL_$TARGETARCH.deb && \
