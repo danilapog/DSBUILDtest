@@ -82,16 +82,16 @@ ENV COMPANY_NAME=$COMPANY_NAME \
     TARGETARCH=$TARGETARCH \
     PRODUCT_EDITION=$PRODUCT_EDITION 
 
-RUN PACKAGE_URL=$PACKAGE_URL_$TARGETARCH.deb && \
-    echo $PACKAGE_URL && \
-    wget -q -P /tmp "$PACKAGE_URL" && \
+RUN URL=$PACKAGE_URL_$TARGETARCH.deb && \
+    echo $URL && \
+    wget -q -P /tmp "$URL" && \
     apt-get -y update && \
     service postgresql start && \
-    apt-get -yq install /tmp/$(basename "$PACKAGE_URL") && \
+    apt-get -yq install /tmp/$(basename "$URL") && \
     service postgresql stop && \
     service supervisor stop && \
     chmod 755 /app/ds/*.sh && \
-    rm -f /tmp/$(basename "$PACKAGE_URL") && \
+    rm -f /tmp/$(basename "$URL") && \
     rm -rf /var/log/$COMPANY_NAME && \
     rm -rf /var/lib/apt/lists/*
 
