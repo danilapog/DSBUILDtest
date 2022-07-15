@@ -71,7 +71,6 @@ COPY run-document-server.sh /app/ds/run-document-server.sh
 
 EXPOSE 80 443
 
-ARG TARGETARCH
 ARG PRODUCT_EDITION=
 ARG COMPANY_NAME=onlyoffice
 ARG PRODUCT_NAME=documentserver
@@ -79,10 +78,10 @@ ARG PACKAGE_URL="http://download.onlyoffice.com/install/documentserver/linux/${C
 
 ENV COMPANY_NAME=$COMPANY_NAME \
     PRODUCT_NAME=$PRODUCT_NAME \
-    TARGETARCH=$TARGETARCH \
     PRODUCT_EDITION=$PRODUCT_EDITION 
 
-RUN URL=$PACKAGE_URL_$TARGETARCH.deb && \
+RUN if [ $(uname -m) = "x86_64" ] ; then TARGETARCH=amd64 ; else TARGETARCH=arm64 ; fi && \
+    URL=$PACKAGE_URL_$TARGETARCH.deb && \
     echo $URL && \
     wget -q -P /tmp "$URL" && \
     apt-get -y update && \
