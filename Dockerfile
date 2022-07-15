@@ -75,14 +75,14 @@ ARG TARGETARCH
 ARG PRODUCT_EDITION=
 ARG COMPANY_NAME=onlyoffice
 ARG PRODUCT_NAME=documentserver
-ARG PACKAGE_URL="http://download.onlyoffice.com/install/documentserver/linux/${COMPANY_NAME}-${PRODUCT_NAME}${PRODUCT_EDITION}_$TARGETARCH.deb"
+ARG PACKAGE_URL="http://download.onlyoffice.com/install/documentserver/linux/${COMPANY_NAME}-${PRODUCT_NAME}${PRODUCT_EDITION}"
 
 ENV COMPANY_NAME=$COMPANY_NAME \
     PRODUCT_NAME=$PRODUCT_NAME \
-    PRODUCT_EDITION=$PRODUCT_EDITION
+    PRODUCT_EDITION=$PRODUCT_EDITION 
 
-RUN if [ $(uname -m) = "x86_64" ] ; then ARCH=amd64 ; else ARCH=arm64 ; fi && \
-    PACKAGE_URL=$( echo $PACKAGE_URL | sed "s/TARGETARCH/"${ARCH}"/g") && \
+RUN PACKAGE_URL=$PACKAGE_URL_$TARGETARCH.deb
+    echo $PACKAGE_URL
     wget -q -P /tmp "$PACKAGE_URL" && \
     apt-get -y update && \
     service postgresql start && \
