@@ -81,8 +81,8 @@ ENV COMPANY_NAME=$COMPANY_NAME \
     PRODUCT_NAME=$PRODUCT_NAME \
     PRODUCT_EDITION=$PRODUCT_EDITION 
 
-RUN PACKAGE_URL=$PACKAGE_URL_$TARGETARCH.deb
-    echo $PACKAGE_URL
+RUN PACKAGE_URL=$PACKAGE_URL_$TARGETARCH.deb && \
+    echo $PACKAGE_URL && \
     wget -q -P /tmp "$PACKAGE_URL" && \
     apt-get -y update && \
     service postgresql start && \
