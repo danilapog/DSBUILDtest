@@ -33,6 +33,7 @@ jobs:
         uses: docker/setup-qemu-action@v2
 
       - name: Set up Docker Buildx
+        id: buildx
         uses: docker/setup-buildx-action@v2
      
       - name: Login to Docker Hub
@@ -43,12 +44,20 @@ jobs:
 
       - name: Build 4testing
         run: |
-          DOCKER_TAG=$(echo ${{ env.RELEASE_VERSION }} | sed 's/^.//' )
+          DOCKER_TAG=$( echo ${{ env.RELEASE_VERSION }} | sed 's/^.//' )
           PACKAGE_VERSION=$( echo $DOCKER_TAG | sed -E 's/(.*)\./\1-/' )
+          NODE_PLATFORMS=$( echo ${{ steps.buildx.outputs.platforms }} | sed 's/linux\///g' | sed 's/,/ /g' )
           if [[ ${{ env.RELEASE_VERSION }}  == v99.99* ]]; then 
-             PACKAGE_URL=${{ secrets.UNSTABLE_REPO_URL }}${{ matrix.edition }}_"$PACKAGE_VERSION"_amd64.deb
-             URL=${{ secrets.UNSTABLE_REPO_URL }}${{ matrix.edition }}_"$PACKAGE_VERSION"
-          else 
+             for arch in ${NODE_PLATFORSM}; do 
+             PACKAGE_URL=${{ secrets.UNSTABLE_REPO_URL }}${{ matrix.edition }}_"$PACKAGE_VERSION"_$arch.deb
+             STATUS=$(curl -s -o /dev/null -w "%{http_code}\n" "$PACKAGE_URL")
+             if [[ "$STATUS" = "200" ]]; then
+                echo "$arch is avalivable"
+             else 
+                echo "$arch in not avalivable" 
+             fi
+             done 
+          fi
              PACKAGE_URL=${{ secrets.REPO_URL }}${{ matrix.edition }}_"$PACKAGE_VERSION"_amd64.deb
              URL=${{ secrets.REPO_URL }}${{ matrix.edition }}_"$PACKAGE_VERSION"
           fi
