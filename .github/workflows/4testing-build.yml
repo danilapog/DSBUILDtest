@@ -57,7 +57,7 @@ jobs:
                 echo "$arch in not avalivable" 
              fi
              done 
-             
+          fi
              PACKAGE_URL=${{ secrets.REPO_URL }}${{ matrix.edition }}_"$PACKAGE_VERSION"_amd64.deb
              URL=${{ secrets.REPO_URL }}${{ matrix.edition }}_"$PACKAGE_VERSION"
    
