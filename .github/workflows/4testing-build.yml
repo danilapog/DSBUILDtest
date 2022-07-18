@@ -49,7 +49,7 @@ jobs:
           NODE_PLATFORMS=$( echo ${{ steps.buildx.outputs.platforms }} | sed 's/linux\///g' | sed 's/,/ /g' )
           if [[ ${{ env.RELEASE_VERSION }}  == v7.* ]]; then 
              for arch in ${NODE_PLATFORMS}; do 
-             PACKAGE_URL=${{ secrets.UNSTABLE_REPO_URL }}${{ matrix.edition }}_"$PACKAGE_VERSION"_$arch.deb
+             PACKAGE_URL=${{ secrets.REPO_URL }}${{ matrix.edition }}_"$PACKAGE_VERSION"_$arch.deb
              STATUS=$(curl -s -o /dev/null -w "%{http_code}\n" "$PACKAGE_URL")
              if [[ "$STATUS" = "200" ]]; then
                 echo "$arch is avalivable"
