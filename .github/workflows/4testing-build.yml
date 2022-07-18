@@ -57,10 +57,10 @@ jobs:
                 echo "$arch in not avalivable" 
              fi
              done 
-          fi
+             
              PACKAGE_URL=${{ secrets.REPO_URL }}${{ matrix.edition }}_"$PACKAGE_VERSION"_amd64.deb
              URL=${{ secrets.REPO_URL }}${{ matrix.edition }}_"$PACKAGE_VERSION"
-          fi
+   
              STATUS=$(curl -s -o /dev/null -w "%{http_code}\n" "$PACKAGE_URL")
           if [[ "$STATUS" = "200" ]]; then
              echo "Have access to documentserver${{ matrix.edition }} amd64 arch >> check arm64 access"
