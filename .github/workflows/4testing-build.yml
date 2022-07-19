@@ -49,29 +49,25 @@ jobs:
           NODE_PLATFORMS=$( echo ${{ steps.buildx.outputs.platforms }} | sed 's/linux\///g' | sed 's/,/ /g' )
           DEVELOP_PACKAGE_URL=${{ secrets.UNSTABLE_REPO_URL }}${{ matrix.edition }}_"$PACKAGE_VERSION"_${ARCH}.deb
           RELEASE_PACKAGE_URL=${{ secrets.REPO_URL }}${{ matrix.edition }}_"$PACKAGE_VERSION"_${ARCH}.deb
-          if [[ ${{ env.RELEASE_VERSION }} == v7.* ]] || [[ ${{ env.RELEASE_VERSION }} == v8.* ]] || [[ ${{ env.RELEASE_VERSION }} == v9.* ]]; then
-            PACKAGE_URL=${RELEASE_PACKAGE_URL}
-          fi
-
-          if [[ ${{ env.RELEASE_VERSION }} == v99.99* ]]; then
-            PACKAGE_URL=${DEVELOP_PACKAGE_URL}
-          fi
-
-          if [[ ${{ env.RELEASE_VERSION }}  == v7.* ]]; then 
-             for ARCH in ${NODE_PLATFORMS}; do 
-             PACKAGE_URL=${{ secrets.REPO_URL }}${{ matrix.edition }}_"$PACKAGE_VERSION"_${ARCH}.deb
-             STATUS=$(curl -s -o /dev/null -w "%{http_code}\n" "$PACKAGE_URL")
-             if [[ "$STATUS" = "200" ]]; then
-                echo "${ARCH} is avalivable, add to build-platform"
-                BUILD_PLATFORMS+=(linux/${ARCH},)
-                echo "${BUILD_PLATFORMS} is gonna builded"
-             else 
-                echo "${ARCH} in not avalivable" 
-             fi
-             done 
+          for ARCH in ${NODE_PLATFORMS}; do 
+            if [[ ${{ env.RELEASE_VERSION }} == v7.* ]] || [[ ${{ env.RELEASE_VERSION }} == v8.* ]] || [[ ${{ env.RELEASE_VERSION }} == v9.* ]]; then
+              PACKAGE_URL=${{ secrets.REPO_URL }}${{ matrix.edition }}_"$PACKAGE_VERSION"_${ARCH}.deb
+            fi
+            if [[ ${{ env.RELEASE_VERSION }} == v99.99* ]]; then
+              PACKAGE_URL=${{ secrets.UNSTABLE_REPO_URL }}${{ matrix.edition }}_"$PACKAGE_VERSION"_${ARCH}.deb
+            fi
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}\n" "$PACKAGE_URL")
+            if [[ "$STATUS" = "200" ]]; then
+               echo "${ARCH} is avalivable, add to build-platform"
+               BUILD_PLATFORMS+=(linux/${ARCH},)
+               echo "${BUILD_PLATFORMS[@]} is gonna builded"
+            else 
+               echo "${ARCH} in not avalivable" 
+            fi
+          done 
           echo "build is gonna to ${BUILD_PLATFORMS}" 
-          fi
-          exit 0
+         
+      
 
 
 
