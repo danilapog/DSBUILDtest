@@ -60,12 +60,14 @@ jobs:
             if [[ "$STATUS" = "200" ]]; then
                echo "${ARCH} is avalivable, add to build-platform"
                BUILD_PLATFORMS+=(linux/${ARCH},)
-               echo "${BUILD_PLATFORMS[@]} is gonna builded"
+               PLATFORMS=$( echo ${BUILD_PLATFORMS[@]} | sed 's/ //g' | sed 's/(.*)\,/\1-/' )
+               echo "${PLATFORMS} is gonna builded"
             else 
                echo "${ARCH} in not avalivable" 
             fi
           done 
-          echo "build is gonna to ${BUILD_PLATFORMS}" 
+          echo "build is gonna to ${PLATFORMS}" 
+          exit 0
          
       
 
