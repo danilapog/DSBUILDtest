@@ -52,12 +52,10 @@ jobs:
             if [[ ${{ env.RELEASE_VERSION }} == v7.* ]] || [[ ${{ env.RELEASE_VERSION }} == v8.* ]] || [[ ${{ env.RELEASE_VERSION }} == v9.* ]] || [[ ${{ env.RELEASE_VERSION }} == v10.* ]]; then
               PACKAGE_URL_CHECK=${{ secrets.REPO_URL }}${{ matrix.edition }}_"$PACKAGE_VERSION"_${ARCH}.deb
               PACKAGE_URL_BUILD=${{ secrets.REPO_URL }}${{ matrix.edition }}_"$PACKAGE_VERSION"_TARGETARCH.deb
-              echo "Build 4testing not develop"
             fi
             if [[ ${{ env.RELEASE_VERSION }} == v99.99* ]]; then
               PACKAGE_URL_CHECK=${{ secrets.UNSTABLE_REPO_URL }}${{ matrix.edition }}_"$PACKAGE_VERSION"_${ARCH}.deb
               PACKAGE_URL_BUILD=${{ secrets.UNSTABLE_REPO_URL }}${{ matrix.edition }}_"$PACKAGE_VERSION"_TARGETARCH.deb
-              echo "Build for develop"
             fi
             STATUS=$(curl -s -o /dev/null -w "%{http_code}\n" "${PACKAGE_URL_CHECK}")
             if [[ "$STATUS" = "200" ]]; then
