@@ -59,6 +59,7 @@ jobs:
 
           if [[ ${{ env.RELEASE_VERSION }}  == v7.* ]]; then 
              for ARCH in ${NODE_PLATFORMS}; do 
+             PACKAGE_URL=${{ secrets.REPO_URL }}${{ matrix.edition }}_"$PACKAGE_VERSION"_${ARCH}.deb
              STATUS=$(curl -s -o /dev/null -w "%{http_code}\n" "$PACKAGE_URL")
              if [[ "$STATUS" = "200" ]]; then
                 echo "$arch is avalivable, add to build-platform"
