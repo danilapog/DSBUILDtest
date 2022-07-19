@@ -81,17 +81,23 @@ ENV COMPANY_NAME=$COMPANY_NAME \
     PRODUCT_EDITION=$PRODUCT_EDITION \
     PACKAGE_URL=$PACKAGE_URL 
 
-RUN if [ $(uname -m) = "x86_64" ] ; then TARGETARCH=amd64 ; else TARGETARCH=arm64 ; fi && \
-    URL=$PACKAGE_URL_$TARGETARCH.deb && \
-    echo $URL && \
-    wget -q -P /tmp "$URL" && \
+RUN if [[ $(uname -m) == "x86_64" || $(uname -m) == "amd64" ]]; then 
+      TARGETARCH=amd64 
+      echo "ARCH IS ${TARGETARCH}" 
+    fi && \
+    if [[ $(uname -m) == "aarch64" || $(uname -m) == "arm64" ]]; then 
+      TARGETARCH=arm64 
+      echo "ARCH IS ${TARGETARCH}"
+    fi && \
+    PACKAGE_URL=$( echo ${PACKAGE_URL} | sed "s/TARGETARCH/"${TARGETARCH}"/g") && \
+    wget -q -P /tmp "$PACKAGE_URL" && \
     apt-get -y update && \
     service postgresql start && \
-    apt-get -yq install /tmp/$(basename "$URL") && \
+    apt-get -yq install /tmp/$(basename "$PACKAGE_URL") && \
     service postgresql stop && \
     service supervisor stop && \
     chmod 755 /app/ds/*.sh && \
-    rm -f /tmp/$(basename "$URL") && \
+    rm -f /tmp/$(basename "$PACKAGE_URL") && \
     rm -rf /var/log/$COMPANY_NAME && \
     rm -rf /var/lib/apt/lists/*
 
