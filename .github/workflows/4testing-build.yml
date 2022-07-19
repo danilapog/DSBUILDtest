@@ -68,7 +68,7 @@ jobs:
                echo "${ARCH} in not avalivable" 
             fi
           done 
-          if [[ -n ${BUILD_PLATFORMS} ]]; then 
+          if [[ -z ${BUILD_PLATFORMS} ]]; then 
              echo "Have no avalivable platforms >> exit with 1"
              exit 1
           fi 
