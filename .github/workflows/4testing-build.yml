@@ -68,6 +68,10 @@ jobs:
                echo "${ARCH} in not avalivable" 
             fi
           done 
+          if [[ -n ${BUILD_PLATFORMS} ]]; then 
+             echo "Have no avalivable platforms >> exit with 1"
+             exit 1
+          fi 
           echo "DONE: Check passed >> Build for platforms: ${BUILD_PLATFORMS}" 
           PRODUCT_EDITION=${{ matrix.edition }} PACKAGE_URL=$PACKAGE_URL_BUILD \
             PRODUCT_NAME=${{ env.PRODUCT_NAME }} DOCKERFILE=Dockerfile \
