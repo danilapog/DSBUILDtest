@@ -62,13 +62,13 @@ jobs:
              PACKAGE_URL=${{ secrets.REPO_URL }}${{ matrix.edition }}_"$PACKAGE_VERSION"_${ARCH}.deb
              STATUS=$(curl -s -o /dev/null -w "%{http_code}\n" "$PACKAGE_URL")
              if [[ "$STATUS" = "200" ]]; then
-                echo "$arch is avalivable, add to build-platform"
-                BUILD_PLATFORMS+=(linux/$arch,)
+                echo "${ARCH} is avalivable, add to build-platform"
+                BUILD_PLATFORMS+=(linux/${ARCH},)
              else 
-                echo "$arch in not avalivable" 
+                echo "${ARCH} in not avalivable" 
              fi
              done 
-          echo "build is gonna to $BUILD_PLATFORMS" 
+          echo "build is gonna to ${BUILD_PLATFORMS}" 
           fi
              PACKAGE_URL=${{ secrets.REPO_URL }}${{ matrix.edition }}_"$PACKAGE_VERSION"_amd64.deb
              URL=${{ secrets.REPO_URL }}${{ matrix.edition }}_"$PACKAGE_VERSION"
