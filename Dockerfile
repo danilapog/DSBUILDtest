@@ -71,6 +71,7 @@ COPY run-document-server.sh /app/ds/run-document-server.sh
 
 EXPOSE 80 443
 
+ARG TARGETARCH
 ARG PRODUCT_EDITION=
 ARG COMPANY_NAME=onlyoffice
 ARG PRODUCT_NAME=documentserver
@@ -78,8 +79,7 @@ ARG PACKAGE_URL="http://download.onlyoffice.com/install/documentserver/linux/${C
 
 ENV COMPANY_NAME=$COMPANY_NAME \
     PRODUCT_NAME=$PRODUCT_NAME \
-    PRODUCT_EDITION=$PRODUCT_EDITION \
-    PACKAGE_URL=$PACKAGE_URL 
+    PRODUCT_EDITION=$PRODUCT_EDITION 
 
 RUN if [ $(uname -m) = "x86_64" ] || [ $(uname -m) = "amd64" ]; then TARGETARCH=amd64; fi && \
     if [ $(uname -m) = "aarch64" ] || [ $(uname -m) = "arm64" ]; then TARGETARCH=arm64; fi && \
