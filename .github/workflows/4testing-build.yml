@@ -54,8 +54,8 @@ jobs:
             if [[ ${{ env.RELEASE_VERSION }} == v99.* ]]; then
               REPO_URL=${{ secrets.UNSTABLE_REPO_URL }} 
             fi
-            PACKAGE_URL_BUILD=${REPO_URL}${{ matrix.edition }}_"$PACKAGE_VERSION"_TARGETARCH.deb
-            PACKAGE_URL_CHECK=$( echo ${PACKAGE_URL_BUILD} | sed "s/TARGETARCH/${ARCH}/" )
+            PACKAGE_URL_CHECK=${REPO_URL}${{ matrix.edition }}_"$PACKAGE_VERSION"_${ARCH}.deb
+            PACKAGE_URL_BUILD=$( echo ${PACKAGE_URL_CHECK} | sed "s/${ARCH}/TARGETARCH/" )
             STATUS=$(curl -s -o /dev/null -w "%{http_code}\n" "${PACKAGE_URL_CHECK}")
             if [[ "$STATUS" = "200" ]]; then
                echo "${ARCH} is avalivable, add to building-platform"
