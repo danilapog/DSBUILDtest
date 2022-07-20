@@ -55,7 +55,6 @@ jobs:
               REPO_URL=${{ secrets.UNSTABLE_REPO_URL }} 
             fi
             PACKAGE_URL_CHECK=${REPO_URL}${{ matrix.edition }}_"$PACKAGE_VERSION"_${ARCH}.deb
-            PACKAGE_URL_BUILD=$( echo ${PACKAGE_URL_CHECK} | sed "s/${ARCH}/TARGETARCH/" )
             STATUS=$(curl -s -o /dev/null -w "%{http_code}\n" "${PACKAGE_URL_CHECK}")
             if [[ "$STATUS" = "200" ]]; then
                echo "${ARCH} is avalivable, add to building-platform"
@@ -69,6 +68,7 @@ jobs:
              echo "Have no access to any platform >> exit with 1"
              exit 1
           fi 
+          PACKAGE_URL_BUILD=$( echo ${PACKAGE_URL_CHECK} | sed "s/${ARCH}/TARGETARCH/" )
           echo "DONE: Check passed >> Build for platforms: ${BUILD_PLATFORMS}" 
           PRODUCT_EDITION=${{ matrix.edition }} \
           PACKAGE_URL=$PACKAGE_URL_BUILD \
