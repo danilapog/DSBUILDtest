@@ -50,7 +50,7 @@ jobs:
           echo "Start check avalivable build platforms >>" 
           ### ➡  in this loop we check access platforms  ###
           for ARCH in ${NODE_PLATFORMS}; do 
-            REPO_URL=${{ secrets.REPO_URL }} 
+            PACKAGE_URL=${{ secrets.REPO_URL }} 
             if [[ ${{ env.RELEASE_VERSION }} == v99.* ]]; then
               REPO_URL=${{ secrets.UNSTABLE_REPO_URL }} 
             fi
