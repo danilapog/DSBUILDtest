@@ -6,8 +6,6 @@ ENV LANG=en_US.UTF-8 LANGUAGE=en_US:en LC_ALL=en_US.UTF-8 DEBIAN_FRONTEND=nonint
 ARG ONLYOFFICE_VALUE=onlyoffice
 
 RUN echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d && \
-    ARCH=$(uname -m) && \
-    echo "THIS IS ${ARCH}" && \
     apt-get -y update && \
     apt-get -yq install wget apt-transport-https gnupg locales && \
     mkdir -p $HOME/.gnupg && \
@@ -83,9 +81,9 @@ ENV COMPANY_NAME=$COMPANY_NAME \
     PRODUCT_NAME=$PRODUCT_NAME \
     PRODUCT_EDITION=$PRODUCT_EDITION 
 
-RUN TARGETARCH=${uname -m} && \
-    if [[ $TARGETARCH == x86_64 ]] ; then TARGETARCH=amd64 ; fi && \
-    if [[ $TARGETARCH == aarch64 ]] ; then TARGETARCH=arm64 ; fi && \
+RUN ARCH=${uname -m} && \
+    if [ "$TARGETARCH" = "x86_64" ]; then TARGETARCH=amd64; fi && \
+    if [ "$TARGETARCH" = "aarch64" ]; then TARGETARCH=arm64; fi && \
     PACKAGE_URL=$( echo ${PACKAGE_URL} | sed "s/TARGETARCH/"${TARGETARCH}"/g") && \
     wget -q -P /tmp "$PACKAGE_URL" && \
     apt-get -y update && \
