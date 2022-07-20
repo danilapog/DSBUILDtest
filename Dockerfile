@@ -6,14 +6,14 @@ ENV LANG=en_US.UTF-8 LANGUAGE=en_US:en LC_ALL=en_US.UTF-8 DEBIAN_FRONTEND=nonint
 ARG ONLYOFFICE_VALUE=onlyoffice
 
 RUN echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d && \
+    ARCH=$(uname -m) && \
+    echo "THIS IS ${ARCH}" && \
     apt-get -y update && \
     apt-get -yq install wget apt-transport-https gnupg locales && \
     mkdir -p $HOME/.gnupg && \
     gpg --no-default-keyring --keyring gnupg-ring:/etc/apt/trusted.gpg.d/onlyoffice.gpg --keyserver keyserver.ubuntu.com --recv-keys 0x8320ca65cb2de8e5 && \
     chmod 644 /etc/apt/trusted.gpg.d/onlyoffice.gpg && \
     locale-gen en_US.UTF-8 && \
-    ARCH=$(uname -m) && \
-    echo "THIS IS ${ARCH}" && \
     echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | debconf-set-selections && \
     apt-get -yq install \
         adduser \
