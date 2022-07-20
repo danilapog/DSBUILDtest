@@ -68,6 +68,7 @@ jobs:
              echo "Have no access to any platform >> exit with 1"
              exit 1
           fi 
+          echo ${PACKAGE_URL_CHECK} 
           PACKAGE_URL_BUILD=$( echo ${PACKAGE_URL_CHECK} | sed "s/${ARCH}/TARGETARCH/" )
           echo "DONE: Check passed >> Build for platforms: ${BUILD_PLATFORMS}" 
           PRODUCT_EDITION=${{ matrix.edition }} \
