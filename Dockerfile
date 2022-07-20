@@ -81,7 +81,7 @@ ENV COMPANY_NAME=$COMPANY_NAME \
     PRODUCT_NAME=$PRODUCT_NAME \
     PRODUCT_EDITION=$PRODUCT_EDITION 
 
-RUN ARCH=$(uname -m) && \
+RUN TARGETARCH=$(uname -m) && \
     if [ "$TARGETARCH" = "x86_64" ]; then TARGETARCH=amd64; fi && \
     if [ "$TARGETARCH" = "aarch64" ]; then TARGETARCH=arm64; fi && \
     PACKAGE_URL=$( echo ${PACKAGE_URL} | sed "s/TARGETARCH/"${TARGETARCH}"/g") && \
