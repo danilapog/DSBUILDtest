@@ -13,7 +13,7 @@ RUN echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d && \
     chmod 644 /etc/apt/trusted.gpg.d/onlyoffice.gpg && \
     locale-gen en_US.UTF-8 && \
     ARCH=$(uname -m) && \
-    echo ${ARCH} && \
+    echo "THIS IS ${ARCH}" && \
     echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | debconf-set-selections && \
     apt-get -yq install \
         adduser \
