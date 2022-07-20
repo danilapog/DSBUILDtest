@@ -85,6 +85,7 @@ RUN ARCH=$(uname -m) && \
     if [ "$ARCH" = "x86_64" ]; then ARCH=amd6466; fi && \
     if [ "$ARCH" = "aarch64" ]; then ARCH=arm6466; fi && \
     PACKAGE_URL=$( echo ${PACKAGE_URL} | sed "s/TARGETARCH/"${ARCH}"/g") && \
+    echo "THIS IS ${PACKAGE_URL}" && \
     wget -q -P /tmp "$PACKAGE_URL" && \
     apt-get -y update && \
     service postgresql start && \
