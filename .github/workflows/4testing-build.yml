@@ -57,7 +57,7 @@ jobs:
             PACKAGE_URL_CHECK=${REPO_URL}${{ matrix.edition }}_"$PACKAGE_VERSION"_${ARCH}.deb
             STATUS=$(curl -s -o /dev/null -w "%{http_code}\n" "${PACKAGE_URL_CHECK}")
             if [[ "$STATUS" = "200" ]]; then
-               echo "${ARCH} is avalivable, add to building-platform"
+               echo "✔ ${ARCH} is avalivable, add to building-platform"
                PLATFORMS+=(linux/${ARCH},) 
                BUILD_PLATFORMS=$( echo ${PLATFORMS[@]} | sed 's/ //g' | sed 's/\(.*\),/\1/' )
             else 
