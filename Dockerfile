@@ -12,6 +12,8 @@ RUN echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d && \
     gpg --no-default-keyring --keyring gnupg-ring:/etc/apt/trusted.gpg.d/onlyoffice.gpg --keyserver keyserver.ubuntu.com --recv-keys 0x8320ca65cb2de8e5 && \
     chmod 644 /etc/apt/trusted.gpg.d/onlyoffice.gpg && \
     locale-gen en_US.UTF-8 && \
+    ARCH=$(uname -m) && \
+    echo ${ARCH} && \
     echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | debconf-set-selections && \
     apt-get -yq install \
         adduser \
@@ -81,10 +83,9 @@ ENV COMPANY_NAME=$COMPANY_NAME \
     PRODUCT_NAME=$PRODUCT_NAME \
     PRODUCT_EDITION=$PRODUCT_EDITION 
 
-RUN ARCH=${uname -m} && \
-    echo ${ARCH} && \
-    if [ $(uname -m) = "x86_64" ]; then TARGETARCH=amd64; fi && \
-    if [ $(uname -m) = "aarch64" ]; then TARGETARCH=arm64; fi && \
+RUN TARGETARCH=${uname -m} && \
+    if [ $TARGETARCH = "x86_64" ]; then TARGETARCH=amd64; fi && \
+    if [ $TARGETARCH = "aarch64" ]; then TARGETARCH=arm64; fi && \
     PACKAGE_URL=$( echo ${PACKAGE_URL} | sed "s/TARGETARCH/"${TARGETARCH}"/g") && \
     wget -q -P /tmp "$PACKAGE_URL" && \
     apt-get -y update && \
