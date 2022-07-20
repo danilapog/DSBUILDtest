@@ -50,12 +50,12 @@ jobs:
           echo "Start check avalivable build platforms >>" 
           ### ➡  in this loop we check access platforms  ###
           for ARCH in ${NODE_PLATFORMS}; do 
-            PACKAGE_URL=${{ secrets.REPO_URL }} 
+            REPO_URL=${{ secrets.REPO_URL }} 
             if [[ ${{ env.RELEASE_VERSION }} == v99.* ]]; then
               REPO_URL=${{ secrets.UNSTABLE_REPO_URL }} 
             fi
             PACKAGE_URL_CHECK=${REPO_URL}${{ matrix.edition }}_"$PACKAGE_VERSION"_${ARCH}.deb
-            PACKAGE_URL_BUILD=$(REPO_URL}${{ matrix.edition }}_"$PACKAGE_VERSION"_TARGETARCH.deb
+            PACKAGE_URL_BUILD=${REPO_URL}${{ matrix.edition }}_"$PACKAGE_VERSION"_TARGETARCH.deb
             STATUS=$(curl -s -o /dev/null -w "%{http_code}\n" "${PACKAGE_URL_CHECK}")
             if [[ "$STATUS" = "200" ]]; then
                echo "${ARCH} is avalivable, add to building-platform"
@@ -69,7 +69,6 @@ jobs:
              echo "Have no access to any platform >> exit with 1"
              exit 1
           fi 
-          PACKAGE_URL_BUILD=$( echo ${PACKAGE_URL_CHECK} | sed "s/${ARCH}/TARGETARCH/" )
           echo "DONE: Check passed >> Build for platforms: ${BUILD_PLATFORMS}" 
           PRODUCT_EDITION=${{ matrix.edition }} \
           PACKAGE_URL=$PACKAGE_URL_BUILD \
