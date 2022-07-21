@@ -72,16 +72,6 @@ jobs:
              exit 1
           fi 
           echo "DONE: Check passed >> Build for platforms: ${BUILD_PLATFORMS}" 
-          PRODUCT_EDITION=${{ matrix.edition }} \
-          PACKAGE_URL=$PACKAGE_URL_BUILD \
-          PRODUCT_NAME=${{ env.PRODUCT_NAME }} \
-          DOCKERFILE=Dockerfile \
-          PREFIX_NAME=4testing- \
-          TAG=$DOCKER_TAG \
-          PLATFORM=$BUILD_PLATFORMS \
-            docker buildx bake \
-            -f docker-bake.hcl ${{ matrix.images }} \
-            --print
           echo "Build is starting ... >>"     
           PRODUCT_EDITION=${{ matrix.edition }} \
           PACKAGE_URL=$PACKAGE_URL_BUILD \
