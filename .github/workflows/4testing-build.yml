@@ -65,6 +65,7 @@ jobs:
             fi
           done
           PACKAGE_URL_BUILD=$( echo ${PACKAGE_URL_CHECK} | sed -e "s/${PACKAGE_VERSION}_.*.deb/${PACKAGE_VERSION}_TARGETARCH.deb/g" )
+          echo "THIS IS ${PACKAGE_URL_BUILD}"
           ### ==>> At this step if there is no access to any platform and platform list is empty, build will exit with 1. ###  
           if [[ -z ${BUILD_PLATFORMS} ]]; then
             echo "Have no access to any platform >> exit with 1"
