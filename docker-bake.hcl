@@ -11,7 +11,7 @@ variable "SHORTEST_TAG" {
 }
 
 variable "COMPANY_NAME" {
-    default = "danilaworker"
+    default = ""
 }
 
 variable "PREFIX_NAME" {
@@ -23,7 +23,7 @@ variable "PRODUCT_EDITION" {
 }
 
 variable "PRODUCT_NAME" {
-    default = "documentserver"
+    default = ""
 }
 
 variable "DOCKERFILE" {
@@ -31,11 +31,11 @@ variable "DOCKERFILE" {
 }
 
 variable "PLATFORM" {
-    default = "" 
+    default = ""
 }
 
 variable "PACKAGE_URL" {
-    default = "" 
+    default = ""
 }
 
 target "documentserver" {
@@ -46,20 +46,23 @@ target "documentserver" {
     args = {
         "PRODUCT_EDITION": "${PRODUCT_EDITION}"
         "PRODUCT_NAME": "${PRODUCT_NAME}"
-        "PACKAGE_URL": "${PACKAGE_URL}"
+        "COMPANY_NAME": "${COMPANY_NAME}"
+        "PACKAGE_URL": "{PACKAGE_URL}"
+        "PLATFORM": "${PLATFORM}"
     }
 }
 
 target "documentserver-stable" {
     target = "documentserver-stable"
     dockerfile= "${DOCKERFILE}"
-    tags = ["docker.io/danilaworker/${PREFIX_NAME}${PRODUCT_NAME}${PRODUCT_EDITION}:${TAG}",
-            "docker.io/danilaworker/${PREFIX_NAME}${PRODUCT_NAME}${PRODUCT_EDITION}:${SHORTER_TAG}",
-            "docker.io/danilaworker/${PREFIX_NAME}${PRODUCT_NAME}${PRODUCT_EDITION}:${SHORTEST_TAG}",
-            "docker.io/danilaworker/${PREFIX_NAME}${PRODUCT_NAME}${PRODUCT_EDITION}:latest"]
+    tags = ["docker.io/${COMPANY_NAME}/${PREFIX_NAME}${PRODUCT_NAME}${PRODUCT_EDITION}:${TAG}",
+            "docker.io/${COMPANY_NAME}/${PREFIX_NAME}${PRODUCT_NAME}${PRODUCT_EDITION}:${SHORTER_TAG}",
+            "docker.io/${COMPANY_NAME}/${PREFIX_NAME}${PRODUCT_NAME}${PRODUCT_EDITION}:${SHORTEST_TAG}",
+            "docker.io/${COMPANY_NAME}/${PREFIX_NAME}${PRODUCT_NAME}${PRODUCT_EDITION}:latest"]
     platforms = ["linux/amd64", "linux/arm64"]
     args = {
         "PRODUCT_EDITION": "${PRODUCT_EDITION}"
         "PRODUCT_NAME": "${PRODUCT_NAME}"
+        "COMPANY_NAME": "${COMPANY_NAME}"
     }
 }

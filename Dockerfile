@@ -75,13 +75,14 @@ ARG TARGETARCH
 ARG PRODUCT_EDITION=
 ARG COMPANY_NAME=onlyoffice
 ARG PRODUCT_NAME=documentserver
-ARG PACKAGE_URL="http://download.onlyoffice.com/install/documentserver/linux/${COMPANY_NAME}-${PRODUCT_NAME}${PRODUCT_EDITION}"
+ARG PACKAGE_URL="http://download.onlyoffice.com/install/documentserver/linux/${COMPANY_NAME}-${PRODUCT_NAME}${PRODUCT_EDITION}_$TARGETARCH.deb"
 
 ENV COMPANY_NAME=$COMPANY_NAME \
     PRODUCT_NAME=$PRODUCT_NAME \
-    PRODUCT_EDITION=$PRODUCT_EDITION 
+    PRODUCT_EDITION=$PRODUCT_EDITION
 
 RUN PACKAGE_URL=$( echo ${PACKAGE_URL} | sed "s/TARGETARCH/"${TARGETARCH}"/g") && \
+    echo "THIS IS ${PACKAGE_URL}" && \
     wget -q -P /tmp "$PACKAGE_URL" && \
     apt-get -y update && \
     service postgresql start && \
@@ -95,4 +96,4 @@ RUN PACKAGE_URL=$( echo ${PACKAGE_URL} | sed "s/TARGETARCH/"${TARGETARCH}"/g") &
 
 VOLUME /var/log/$COMPANY_NAME /var/lib/$COMPANY_NAME /var/www/$COMPANY_NAME/Data /var/lib/postgresql /var/lib/rabbitmq /var/lib/redis /usr/share/fonts/truetype/custom
 
-ENTRYPOINT ["/app/ds/run-document-server.sh"]    
+ENTRYPOINT ["/app/ds/run-document-server.sh"]
